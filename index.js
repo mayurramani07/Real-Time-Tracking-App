@@ -15,14 +15,16 @@ io.on("connection" , function(socket) {
     socket.on("send-location" , function(data) {
         io.emit("receive-location",{id: socket.id, ...data});
     });
-    console.log("A User Connected");
+    socket.on("disconnect" , function() {
+        io.emit("user-disconnected" , socket.id);
+    });
 });
 
 app.get("/" , function (req, res) {
     res.render("index");
 });
 
-const port = 7001;
+const port = 7002;
 server.listen(port , () => {
     console.log(`server is running on port ${port}`);
 });
